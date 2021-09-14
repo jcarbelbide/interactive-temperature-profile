@@ -1,0 +1,95 @@
+.App {
+    text-align: center;
+    background-color: #282c34;
+    margin: 0;
+}
+
+body {
+    background-color: #282c34;
+    margin: 0;
+    color: white;
+    font-size: calc(10px + 2vmin);
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+.App-header {
+    /* background-color: #282c34; */
+    /* min-height: 100vh; */
+    /* font-size: calc(10px + 2vmin); */
+    /* color: white; */
+    /* text-align: left; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: left;
+    position: relative;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+.to-do-list {
+    /* background-color: #282c34; */
+    /* min-height: 100vh; */
+    /* font-size: calc(10px + 2vmin); */
+    /* color: white; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    padding-top: 2vh;
+    padding-left: 3vh;
+    padding-bottom: 3vh;
+    font-size: 0.5em;
+}
+
+#chartJSContainer {
+    background-color: rgba(255, 255, 255, 1);
+    margin: 10px;
+}
+
+#ramp-time-boxes {
+    /* display: flex;
+    flex-direction: row;
+    justify-content: space-between; */
+    /* width: 100vw; */
+    /* animation: fadeIn 1s; */
+    
+    position: absolute;
+    color: black;
+
+
+
+
+}
+
+.ramp-time-box-class {
+    position: absolute;
+    width: 50px;
+    opacity: 0.5;
+    animation-name: fadeIn;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.5s;
+    /* transform: rotate(45deg); */
+}
+
+.ramp-time-box-class:focus {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+
+
+
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:0.5;}
+}
+

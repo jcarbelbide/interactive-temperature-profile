@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='styles.css' rel='stylesheet'>
+    <!-- Third Party Dependencies  -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="dependencies/chart.min.js"></script>
+    <script src="dependencies/chartjs-plugin-dragdata.min.js"></script>
+    <script src="dependencies/jquery.alphanum.js"></script>
+    
+    <!-- Custom dependencies -->
+    <script src="temperature-graph.js" defer type='module'></script>
+    
+
+    <title>Drift Oven Controller</title>
+</head>
+<body>
+    <div class="App">
+        <div class='to-do-list'>
+          TODO: 
+          <br/>
+          1. Choose power supply?
+          <br/>
+          2. Choose Temperatures to set. Have different defaults
+          <br/>
+          3. Choose ramp rate?
+          <br/>
+          4. Choose soak time.
+          <br/>
+          5. Call Python Scripts? Use Ajax
+          <br/>
+          6. Incorporate initial 25C measurement
+          <br/>
+          7. Add way to change scales (y-axis) 
+          <br/>
+          8. Add reset button to chart and all of the presets
+          <br/>
+          DONE: Add local storage for the ramp time labels. 
+          <br/>
+          NEXT: Convert to jquery
+          <br/>
+        </div>
+        <header class="App-header">
+          <canvas id="chartJSContainer"></canvas>
+          <div id="ramp-time-labels">
+            <!-- <div id="label1">Item 1</div> -->
+            <!-- <div id="label1">Item 2</div> -->
+          </div>
+          <div id="temperature-labels"></div>
+
+          <button id="reset-chart-button">Reset</button>
+          <br/>
+          <button id="add-temp-label">Add Label</button>
+
+        </header>
+      </div>
+</body>
+</html>
