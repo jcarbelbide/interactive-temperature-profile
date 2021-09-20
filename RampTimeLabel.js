@@ -9,7 +9,7 @@ export class RampTimeLabel {
         this.chart = chartArg;
 
         //init HTML
-        const currentDiv = document.getElementById("ramp-time-labels");
+        const currentDiv = document.getElementById(RampTimeLabel.HTML_PARENT_DIV_TAG);
         const newDiv = document.createElement("input");
         currentDiv.insertBefore(newDiv, null);  //insert div at the end of the temperature boxes
         this.element = newDiv;
@@ -74,6 +74,10 @@ export class RampTimeLabel {
         this.labelVal = this.element.value
         saveChartDataToLocalStorage(getChartTemperatureArray(window.chart), window.rampTimeLabels)
     }   
+
+    static get HTML_PARENT_DIV_TAG() {
+        return "ramp-time-labels"
+    }
 
 }
 
