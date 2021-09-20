@@ -20,7 +20,7 @@ export class RampTimeLabel {
         
         //init CSS style
         this.element.id = `ramp-time-label-${this.labelNum}`
-        this.element.className = 'ramp-time-box-class';
+        this.element.className = 'label-class';
         this.updateLabelPositionRotation(getChartPointCoordinateArray(chartArg)[this.labelNum-1], this.point)
         
     }

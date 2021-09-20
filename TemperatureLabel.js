@@ -20,7 +20,7 @@ export class TemperatureLabel {
         
         //init CSS style
         this.element.id = `temperature-label-${this.labelNum}`
-        this.element.className = 'temperature-label-class';
+        this.element.className = 'label-class';
         this.updateLabelPosition()
         
     }
