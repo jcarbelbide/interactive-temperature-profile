@@ -1,4 +1,4 @@
-import { initializeRenderRampTimeLabels, addRampTimeLabel, updateRampTimeLabelsPositionRotation, updateRampTimeLabelsPositionRotationAll, hideRampTimeLabels, removeRampTimeLabel } from './RampTimeLabel.js'
+import { initializeRenderRampTimeLabels, addRampTimeLabel, updateRampTimeLabelsPositionRotation, updateRampTimeLabelsPositionRotationAll, hideRampTimeLabels, removeRampTimeLabel, RampTimeLabel } from './RampTimeLabel.js'
 import { determineChartData, saveChartDataToLocalStorage } from './chart-local-storage.js'
 import { getChartTemperatureArray, getChartPointCoordinateArray, getChartScaleRanges, getChartLabelArray } from './chartjs-api-interactions.js'
 import { TemperatureLabel } from './TemperatureLabel.js'
@@ -119,7 +119,7 @@ function handleDoubleClickAddPoint(e) {
 
     window.chart.update();
     
-    hideRampTimeLabels(1000, document.getElementById("ramp-time-boxes"));
+    hideRampTimeLabels(1000, document.getElementById(RampTimeLabel.HTML_PARENT_DIV_TAG));
     setTimeout(() => {
         addRampTimeLabel(getChartPointCoordinateArray(window.chart), sectionX)
         // console.log(window.rampLabelsUpdated)
@@ -135,7 +135,7 @@ function handleDoubleClickRemovePoint(e) {
     window.chart.update();
     // console.log(point, "point")
 
-    hideRampTimeLabels(1000, document.getElementById("ramp-time-boxes"));
+    hideRampTimeLabels(1000, document.getElementById(RampTimeLabel.HTML_PARENT_DIV_TAG));
     setTimeout(() => {
         removeRampTimeLabel(getChartPointCoordinateArray(window.chart), point)
     }, 1000)    // must wait for animation to end before properly adding in the label 
@@ -233,6 +233,5 @@ document.getElementById('chartJSContainer').addEventListener('click', (e) => {
 $("#add-temp-label").click(addTempLabelForTesting)
 
 function addTempLabelForTesting() {
-
     let l = new TemperatureLabel(window.chart,1,99);
 }

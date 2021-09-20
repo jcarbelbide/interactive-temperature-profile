@@ -1,7 +1,11 @@
 export function determineChartData() {
     // Presets
-    let localStorageData = JSON.parse(window.localStorage.getItem("driftOvenControllerSavedData"))
-    // console.log(localStorageData)
+    let localStorageDataJSONString = window.localStorage.getItem("driftOvenControllerSavedData");
+    let localStorageData
+    if (localStorageDataJSONString !== 'undefined') {
+        localStorageData = JSON.parse(localStorageDataJSONString);
+    }
+
     let chartData;
     let chartXAxisLabels;
     let rampTimeLabelsValues;
@@ -27,17 +31,17 @@ export function determineChartData() {
 }
 
 export function saveChartDataToLocalStorage(chartData, rampTimeLabels) {
-    // console.log('saving...')
-    // console.log(chartData)
-    let rampTimeLabelsValues = rampTimeLabels.map( (label) => {
-        return String(label.labelVal);
-    })
-
-    // console.log(rampTimeLabelsValues)
-
+    let rampTimeLabelsValues; 
+    if (rampTimeLabels) {
+        rampTimeLabelsValues = rampTimeLabels.map( (label) => {
+            return String(label.labelVal);
+        })
+    }
+    
     let driftOvenControllerSavedData = {
         savedChartData: chartData,
         savedRampTimeLabels: rampTimeLabelsValues
     }
+
     localStorage.setItem("driftOvenControllerSavedData", JSON.stringify(driftOvenControllerSavedData))
 }
