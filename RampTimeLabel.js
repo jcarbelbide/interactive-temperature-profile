@@ -13,7 +13,7 @@ export class RampTimeLabel {
         const newDiv = document.createElement("input");
         currentDiv.insertBefore(newDiv, null);  //insert div at the end of the temperature boxes
         this.element = newDiv;
-        this.labelVal = labelVal;
+        this.labelVal = labelNum;
         this.element.value = `${this.labelVal}`
         this.element.oninput = this.updateRampTimeLabelVal.bind(this);
         $(this.element).numeric();
@@ -21,8 +21,8 @@ export class RampTimeLabel {
         //init CSS style
         this.element.id = `ramp-time-label-${this.labelNum}`
         this.element.className = 'label-class';
-        this.updateLabelPositionRotation(getChartPointCoordinateArray(chartArg)[this.labelNum-1], this.point)
-        
+        // this.updateLabelPositionRotation(getChartPointCoordinateArray(chartArg)[this.labelNum-1], this.point)
+        this.updateLabelPositionRotation(this.point, getChartPointCoordinateArray(chartArg)[this.labelNum+1])
     }
     
     moveRampTimeLabel(x, y) {
@@ -89,16 +89,24 @@ export function hideRampTimeLabels(hiddenTime, rampTimeLabelsHTMLParent) {
 }
 
 export function addRampTimeLabel(chartPointCoordArray, labelNum, rampTimeLabels) {
-    rampTimeLabels.splice(labelNum, 0, new RampTimeLabel(chart, labelNum));
-    updateRampTimeLabelsPositionRotationAll(rampTimeLabels, chartPointCoordArray);
+    if (chartPointCoordArray.length < 2) return
+    if (labelNum === 0) {
+        rampTimeLabels.splice(labelNum, 0, new RampTimeLabel(chart, labelNum));
+        updateRampTimeLabelsPositionRotationAll(rampTimeLabels, chartPointCoordArray);
+    } else {
+        labelNum -= 1;
+        rampTimeLabels.splice(labelNum, 0, new RampTimeLabel(chart, labelNum));
+        updateRampTimeLabelsPositionRotationAll(rampTimeLabels, chartPointCoordArray);
+    }
+    
 }
 
 export function removeRampTimeLabel(chartPointCoordArray, labelNum, rampTimeLabels) {
+    if (chartPointCoordArray.length < 1) return
     if (labelNum < chartPointCoordArray.length - 1) {
         rampTimeLabels[labelNum].element.remove()
         rampTimeLabels.splice(labelNum, 1);    
-    } 
-    else {
+    } else {
         rampTimeLabels[labelNum-1].element.remove()
         rampTimeLabels.splice(labelNum-1, 1);
     }
@@ -111,13 +119,13 @@ export function initializeRenderRampTimeLabels(chart, rampTimeLabelsValues) {
 
     if (rampTimeLabelsValues) {
         // console.log(rampTimeLabelsValues, 'if')
-        for (let i = 1; i < existingPointsArray.length; i++) {
+        for (let i = 0; i < existingPointsArray.length-1; i++) {
             // console.log(rampTimeLabelsValues[i])
             rampTimeLabels.push(new RampTimeLabel(chart, i, rampTimeLabelsValues[i-1]));
         }
 
     } else {
-        for (let i = 1; i < existingPointsArray.length; i++) {
+        for (let i = 0; i < existingPointsArray.length-1; i++) {
             rampTimeLabels.push(new RampTimeLabel(chart, i));
         }
     }
