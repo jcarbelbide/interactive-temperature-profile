@@ -1,9 +1,9 @@
 import { initializeRenderRampTimeLabels, addRampTimeLabel, updateRampTimeLabelsPositionRotation, updateRampTimeLabelsPositionRotationAll, hideRampTimeLabels, removeRampTimeLabel, RampTimeLabel } from './RampTimeLabel.js'
 import { determineChartData, saveChartDataToLocalStorage } from './chart-local-storage.js'
 import { getChartTemperatureArray, getChartPointCoordinateArray, getChartScaleRanges, getChartLabelArray } from './chartjs-api-interactions.js'
-import { TemperatureLabel } from './TemperatureLabel.js'
+import { TemperatureLabel, addTemperatureLabel, removeTemperatureLabel, initializeRenderTemperatureLabels } from './TemperatureLabel.js'
 
-let [chartData, chartXAxisLabels, rampTimeLabelsValues] = determineChartData()
+let [chartData, chartXAxisLabels, rampTimeLabelsValues, temperatureLabelsValues] = determineChartData()
 
 
 
@@ -39,7 +39,7 @@ let options = {
         animation: {
             onComplete: (e) => {
                 if (window.chart) {
-                    saveChartDataToLocalStorage(getChartTemperatureArray(window.chart), window.rampTimeLabels)
+                    saveChartDataToLocalStorage(getChartTemperatureArray(window.chart), window.rampTimeLabels, window.temperatureLabels)
                 }
             },
             onProgress: () => {
@@ -121,7 +121,9 @@ function handleDoubleClickAddPoint(e) {
     
     hideRampTimeLabels(1000, document.getElementById(RampTimeLabel.HTML_PARENT_DIV_TAG));
     setTimeout(() => {
-        addRampTimeLabel(getChartPointCoordinateArray(window.chart), sectionX)
+        addRampTimeLabel(getChartPointCoordinateArray(window.chart), sectionX, window.rampTimeLabels)
+        addTemperatureLabel(getChartPointCoordinateArray(window.chart), sectionX, window.temperatureLabels)
+        
         // console.log(window.rampLabelsUpdated)
         // window.rampLabelsUpdated = true;
     }, 1000)    // must wait for animation to end before properly adding in the label 
@@ -137,7 +139,9 @@ function handleDoubleClickRemovePoint(e) {
 
     hideRampTimeLabels(1000, document.getElementById(RampTimeLabel.HTML_PARENT_DIV_TAG));
     setTimeout(() => {
-        removeRampTimeLabel(getChartPointCoordinateArray(window.chart), point)
+        removeRampTimeLabel(getChartPointCoordinateArray(window.chart), point, window.rampTimeLabels)
+        removeTemperatureLabel(getChartPointCoordinateArray(window.chart), point, window.temperatureLabels)
+        
     }, 1000)    // must wait for animation to end before properly adding in the label 
 
 }
@@ -165,41 +169,6 @@ function calculateSectionX(e, existingPointsArray) {
     return i
 }
 
-
-function calculateLineClick(e, chartMeta, sectionX, lineClickRadius) {
-    // let max_x = e.chart.chartArea.right;
-    // let max_y = e.chart.chartArea.top;
-    // let min_x = e.chart.chartArea.left;
-    // let min_y = e.chart.chartArea.bottom;
-    // let section_width = 1;
-    // let num_sections = e.chart.data.labels.length - 1;
-    let [click_x, click_y] = [e.x, e.y];
-
-    // let existingPointsArray = e.chart._metasets[0].data;
-    let existingPointsArray = chartMeta.data;
-    
-    
-    if (sectionX === 0) return;
-    let left_x = existingPointsArray[sectionX-1].x
-    let left_y = existingPointsArray[sectionX-1].y
-    let right_x = existingPointsArray[sectionX].x
-    let right_y = existingPointsArray[sectionX].y
-    // console.log(left_x, left_y, right_x, right_y);
-    // let sectionXMidpoint = (left_x + right_x) / 2;
-    // let sectionYMidpoint = (left_y + right_y) / 2;
-    
-    // let linePointX = click_x;
-    let linePointY = ((left_y-right_y)/(left_x-right_x))*(click_x - left_x) + left_y;
-    
-    if ( (click_y > linePointY - lineClickRadius && click_y < linePointY + lineClickRadius) ) {
-        return true
-    }
-    else {
-        return false
-    }
-
-}
-
 function removeDataPoint(dataArray, labelsArray, index) {
     // let newArr = [...arr];
     // newArr.splice(index, 0, val)
@@ -223,6 +192,7 @@ window.chart = new Chart(ctx, options);
 window.chart.render()
 setTimeout(() => {
     window.rampTimeLabels = initializeRenderRampTimeLabels(window.chart, rampTimeLabelsValues);
+    window.temperatureLabels = initializeRenderTemperatureLabels(window.chart, temperatureLabelsValues);
 }, 1000) 
 
 

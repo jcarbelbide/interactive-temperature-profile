@@ -88,37 +88,37 @@ export function hideRampTimeLabels(hiddenTime, rampTimeLabelsHTMLParent) {
     }, hiddenTime)
 }
 
-export function addRampTimeLabel(chartPointCoordArray, labelNum) {
-    window.rampTimeLabels.splice(labelNum, 0, new RampTimeLabel(chart, labelNum));
-    updateRampTimeLabelsPositionRotationAll(window.rampTimeLabels, chartPointCoordArray, index);
+export function addRampTimeLabel(chartPointCoordArray, labelNum, rampTimeLabels) {
+    rampTimeLabels.splice(labelNum, 0, new RampTimeLabel(chart, labelNum));
+    updateRampTimeLabelsPositionRotationAll(rampTimeLabels, chartPointCoordArray);
 }
 
-export function removeRampTimeLabel(chartPointCoordArray, labelNum) {
+export function removeRampTimeLabel(chartPointCoordArray, labelNum, rampTimeLabels) {
     if (labelNum < chartPointCoordArray.length - 1) {
-        window.rampTimeLabels[labelNum].element.remove()
-        window.rampTimeLabels.splice(labelNum, 1);    
+        rampTimeLabels[labelNum].element.remove()
+        rampTimeLabels.splice(labelNum, 1);    
     } 
     else {
-        window.rampTimeLabels[labelNum-1].element.remove()
-        window.rampTimeLabels.splice(labelNum-1, 1);
+        rampTimeLabels[labelNum-1].element.remove()
+        rampTimeLabels.splice(labelNum-1, 1);
     }
-    updateRampTimeLabelsPositionRotationAll(window.rampTimeLabels, chartPointCoordArray, index);
+    updateRampTimeLabelsPositionRotationAll(window.rampTimeLabels, chartPointCoordArray);
 }
 
 export function initializeRenderRampTimeLabels(chart, rampTimeLabelsValues) {
     let existingPointsArray = getChartPointCoordinateArray(chart);
-    window.rampTimeLabels = []
+    let rampTimeLabels = []
 
     if (rampTimeLabelsValues) {
         // console.log(rampTimeLabelsValues, 'if')
         for (let i = 1; i < existingPointsArray.length; i++) {
             // console.log(rampTimeLabelsValues[i])
-            window.rampTimeLabels.push(new RampTimeLabel(chart, i, rampTimeLabelsValues[i-1]));
+            rampTimeLabels.push(new RampTimeLabel(chart, i, rampTimeLabelsValues[i-1]));
         }
 
     } else {
         for (let i = 1; i < existingPointsArray.length; i++) {
-            window.rampTimeLabels.push(new RampTimeLabel(chart, i));
+            rampTimeLabels.push(new RampTimeLabel(chart, i));
         }
     }
 
@@ -127,6 +127,7 @@ export function initializeRenderRampTimeLabels(chart, rampTimeLabelsValues) {
 }
 
 export function updateRampTimeLabelsPositionRotation(labelsArray, existingPointsArray, pointNum) {
+    if (labelsArray.length === 0) return;
     if (pointNum === 0) {
         labelsArray[pointNum].updateLabelPositionRotation(existingPointsArray[pointNum], existingPointsArray[pointNum+1])
     } else if(pointNum == existingPointsArray.length - 1) {
@@ -139,11 +140,10 @@ export function updateRampTimeLabelsPositionRotation(labelsArray, existingPoints
 
 }
 
-export function updateRampTimeLabelsPositionRotationAll(labelsArray, existingPointsArray, rampLabelsUpdated) {
-    // if (!rampLabelsUpdated) return;
+export function updateRampTimeLabelsPositionRotationAll(labelsArray, existingPointsArray) {
     
     for (let pointNum = 0; pointNum < existingPointsArray.length; pointNum++) {
-        updateRampTimeLabelsPositionRotation(labelsArray, existingPointsArray, pointNum, rampLabelsUpdated)
+        updateRampTimeLabelsPositionRotation(labelsArray, existingPointsArray, pointNum)
     }
 
         
